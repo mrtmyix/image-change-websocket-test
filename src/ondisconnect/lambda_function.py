@@ -3,8 +3,8 @@ import logging
 import boto3
 
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 CONNECTION_TABLE = os.environ['CONNECTION_TABLE']
 

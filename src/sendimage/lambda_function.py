@@ -4,8 +4,8 @@ import logging
 import boto3
 
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 CONNECTION_TABLE = os.environ['CONNECTION_TABLE']
 S3_BUCKET_NAME = 'ws-image-test'
@@ -31,6 +31,7 @@ def lambda_handler(event, context):
         try:
             image_s3 = f'{S3_ENDPOINT_URL}/{selected_image}.png'
             _ = apigw_management.post_to_connection(ConnectionId=item['connectionId'], Data=image_s3)
+            logger.info(f'image change to: {image_s3}')
         except Exception as e:
             logger.error(e)
             return {'statusCode': 500, 'body': e}
