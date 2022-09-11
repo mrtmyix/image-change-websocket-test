@@ -31,7 +31,7 @@ def lambda_handler(event, context):
         try:
             image_s3 = f'{S3_ENDPOINT_URL}/{selected_image}.png'
             _ = apigw_management.post_to_connection(ConnectionId=item['connectionId'], Data=image_s3)
-            logger.info(f'image change to: {image_s3}')
+            logger.info(f'ConnectionID: {item["connectionId"]}, image: {image_s3}')
         except Exception as e:
             logger.error(e)
             return {'statusCode': 500, 'body': e}
