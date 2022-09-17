@@ -8,7 +8,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 CONNECTION_TABLE = os.environ['CONNECTION_TABLE']
-S3_BUCKET_NAME = 'ws-image-test'
+S3_BUCKET_NAME = ''
 S3_ENDPOINT_URL = f'https://{S3_BUCKET_NAME}.s3.ap-northeast-1.amazonaws.com'
 
 def lambda_handler(event, context):
