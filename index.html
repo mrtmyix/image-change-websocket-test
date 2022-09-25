@@ -29,15 +29,18 @@
     </div>
 
     <script>
-        let img = document.getElementById('img');
-        let socket = new WebSocket("wss://*****.execute-api.ap-northeast-1.amazonaws.com/Prod");
+        const img = document.getElementById('img');
+        // WebSocket URL
+        const socket = new WebSocket("wss://*****.execute-api.ap-northeast-1.amazonaws.com/Prod");
 
+        // 接続後、表示する文字列を変更する
         socket.onopen = () => {
             div_box = document.getElementById('box');
-            p_element = div_box.getElementsByTagName("p");
-            p_element[0].innerHTML = 'WebSocket接続中';
+            p_element = div_box.getElementsByTagName('p');
+            p_element[0].innerHTML = "WebSocket接続中";
         };
 
+        // 画像保存先のS3 URLが送られてくるので、imgタグのsrcをそのURLに変更する
         socket.onmessage = (e) => {
             img.src = e.data;
         };
@@ -52,7 +55,7 @@
             }
             socket.send(JSON.stringify(
                 {
-                    "action":"sendimage",
+                    "action": "sendimage",
                     "selectedImage": selectedImage
                 }
             ));

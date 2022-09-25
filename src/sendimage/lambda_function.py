@@ -8,16 +8,16 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 CONNECTION_TABLE = os.environ['CONNECTION_TABLE']
-S3_BUCKET_NAME = ''
-S3_ENDPOINT_URL = f'https://{S3_BUCKET_NAME}.s3.ap-northeast-1.amazonaws.com'
+IMAGE_S3_BUCKET_NAME = ''
+S3_ENDPOINT_URL = f'https://{IMAGE_S3_BUCKET_NAME}.s3.ap-northeast-1.amazonaws.com'
 
 def lambda_handler(event, context):
 
     dynamodb = boto3.resource('dynamodb')
     connection_table = dynamodb.Table(CONNECTION_TABLE)
     
-    DOMAIN_NAME = event.get('requestContext', {}).get('domainName')
-    STAGE = event.get('requestContext', {}).get('stage')
+    DOMAIN_NAME = event['requestContext']['domainName']
+    STAGE = event['requestContext']['stage']
     WEBSOCKET_ENDPOINT_URL = f'https://{DOMAIN_NAME}/{STAGE}'
 
     try:
@@ -30,7 +30,7 @@ def lambda_handler(event, context):
     for item in items:
         try:
             image_s3 = f'{S3_ENDPOINT_URL}/{selected_image}.png'
-            _ = apigw_management.post_to_connection(ConnectionId=item['connectionId'], Data=image_s3)
+            apigw_management.post_to_connection(ConnectionId=item['connectionId'], Data=image_s3)
             logger.info(f'ConnectionID: {item["connectionId"]}, image: {image_s3}')
         except Exception as e:
             logger.error(e)
